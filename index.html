@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>MoraEvE – Book Your Ticket</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<header>
+  <a class="logo" href="#home">Mora<span>EvE</span></a>
+  <nav><a href="#home" id="n-home">Home</a><a href="#events" id="n-events">Events</a><a href="#contact" id="n-contact">Contact Us</a></nav>
+  <button class="btn ghost sm hide" id="ticketNav" type="button">My tickets</button>
+  <button class="btn" id="regNav">Sign in</button>
+</header>
+
+<!-- HOME -->
+<main id="v-home">
+  <div class="hero">
+    <h1>Discover Events. Create Memories.</h1>
+    <p>Discover your favorite entertainment right here</p>
+    <div class="sbox"><form class="search" onsubmit="goSearch(event)"><input id="hq" placeholder="Search by Event or Venue" aria-label="Search events"><button class="btn">Search</button></form></div>
+  </div>
+  <section><h2>Featured events</h2><p class="sub">A few picks for this week.</p><div class="grid" id="featured"></div></section>
+</main>
+
+<!-- EVENTS PAGE -->
+<main id="v-events" class="hide">
+  <section style="padding-bottom:20px">
+    <h2>Event page</h2><p class="sub">Search by keyword and pick a filter.</p>
+    <div class="sbox" style="max-width:640px"><div class="search" style="margin-top:0;border-color:var(--maroon)"><input id="q" autocomplete="off" placeholder="Search by Artist, Event or Venue" aria-label="Search events"><button class="btn" id="qbtn">Search</button></div><div class="sug" id="sug"></div></div>
+  </section>
+  <div class="filters" id="filters">
+    <button class="chip" data-f="free">Free</button>
+    <button class="chip" data-f="paid">Payable</button>
+    <button class="chip" data-f="Lagan">Lagan</button>
+    <button class="chip" data-f="Robert Peries">Robert Peries</button>
+    <button class="chip" data-f="week">This week</button>
+    <button class="btn sm" id="addBtn">+ Publish event</button>
+  </div>
+  <section><div class="grid" id="list"></div></section>
+</main>
+
+<!-- CONTACT -->
+<section id="v-contact" class="hide" style="min-height:50vh;background:var(--soft)">
+  <h2>Contact Us</h2><p class="sub">We reply within one working day.</p>
+  <p>Email: support@moraeve.lk</p><p>Phone: +94 11 000 0000</p>
+</section>
+
+<footer>© 2026 MoraEvE. All rights reserved.</footer>
+
+<dialog id="authDlg"><form id="authForm">
+  <h3 id="authTitle">Sign in to MoraEvE</h3>
+  <div id="authNameWrap" class="hide">
+    <label for="authName">Full name</label><input id="authName" autocomplete="name">
+  </div>
+  <label for="authEmail">Email</label><input id="authEmail" type="email" autocomplete="email" required>
+  <label for="authPassword">Password</label><input id="authPassword" type="password" minlength="8" autocomplete="current-password" required>
+  <p id="authMessage" class="auth-message" role="status"></p>
+  <div class="acts">
+    <button type="button" class="btn ghost" data-close>Cancel</button>
+    <button type="button" class="btn ghost" id="authModeToggle">Create account</button>
+    <button class="btn" id="authSubmit">Sign in</button>
+  </div>
+</form></dialog>
+
+<dialog id="purchaseDlg"><form id="purchaseForm">
+  <h3 id="purchaseTitle">Enroll</h3>
+  <p id="purchaseEvent" class="sub"></p>
+  <p id="purchaseUnitPrice"></p>
+  <label for="ticketQuantity">Quantity (up to 5)</label>
+  <input id="ticketQuantity" type="number" min="1" max="5" value="1" required>
+  <div id="payDetails">
+    <label for="buyerFirstName">First name</label><input id="buyerFirstName" autocomplete="given-name" required>
+    <label for="buyerLastName">Last name</label><input id="buyerLastName" autocomplete="family-name" required>
+    <label for="buyerPhone">Phone</label><input id="buyerPhone" type="tel" autocomplete="tel" required>
+    <label for="buyerAddress">Address</label><input id="buyerAddress" autocomplete="street-address" required>
+    <label for="buyerCity">City</label><input id="buyerCity" autocomplete="address-level2" required>
+    <label for="buyerCountry">Country</label><input id="buyerCountry" value="Sri Lanka" autocomplete="country-name" required>
+  </div>
+  <p id="purchaseTotal" class="purchase-total"></p>
+  <p id="purchaseMessage" class="auth-message" role="status"></p>
+  <div class="acts">
+    <button type="button" class="btn ghost" data-close>Cancel</button>
+    <button class="btn" id="purchaseSubmit">Continue</button>
+  </div>
+</form></dialog>
+
+<dialog id="ticketDlg">
+  <h3>My tickets</h3>
+  <div id="ticketList" class="ticket-list"></div>
+  <div class="acts"><button type="button" class="btn" data-close>Close</button></div>
+</dialog>
+
+<dialog id="addDlg"><form id="addForm" onsubmit="return false">
+  <h3>Publish an event</h3>
+  <p class="sub">Your event will be published immediately.</p>
+  <label for="at">Title</label><input id="at" required>
+  <label for="organizer">Organizer / club name</label><input id="organizer" maxlength="100" required>
+  <label for="av">Venue</label><input id="av" maxlength="120" required>
+  <label for="ad">Date</label><input id="ad" type="date" required>
+  <label for="ap">Price (LKR, 0 for free)</label><input id="ap" type="number" min="0" value="0" required>
+  <div class="acts"><button type="button" class="btn ghost" data-close>Cancel</button><button class="btn" id="addOk">Publish event</button></div>
+</form></dialog>
+<div class="toast" id="toast" role="status"></div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="script.js"></script>
+</body>
+</html>
