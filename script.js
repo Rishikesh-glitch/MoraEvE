@@ -192,9 +192,9 @@ $("#purchaseForm").addEventListener("submit",async e=>{
   firstName:$("#buyerFirstName").value.trim(),
   lastName:$("#buyerLastName").value.trim(),
   phone:$("#buyerPhone").value.trim(),
-  address:$("#buyerAddress").value.trim(),
-  city:$("#buyerCity").value.trim(),
-  country:$("#buyerCountry").value.trim()
+  IndexNumber:$("#buyerAddress").value.trim(),
+  Department:$("#buyerCity").value.trim(),
+  Faculty:$("#buyerFaculty").value.trim()
  };
  const isFree=Number(targetEvent.price)===0;
  const submit=$("#purchaseSubmit");

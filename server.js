@@ -226,13 +226,13 @@ function buildBuyer(body, user) {
   const firstName = safeText(body.firstName, 60);
   const lastName = safeText(body.lastName, 60);
   const phone = safeText(body.phone, 40);
-  const address = safeText(body.address, 120);
-  const city = safeText(body.city, 60);
-  const country = safeText(body.country, 60);
+  const IndexNumber = safeText(body.IndexNumber, 120);
+  const Department = safeText(body.Department, 60);
+  const Faculty = safeText(body.Faculty, 60);
   const metadataName = safeText(user.user_metadata?.full_name || user.user_metadata?.name, 120);
   const buyerName = `${firstName} ${lastName}`.trim() || metadataName || safeText(user.email?.split("@")[0], 60);
   if (!buyerName) throw Object.assign(new Error("Enter your name before enrolling."), { status: 422 });
-  return { firstName, lastName, phone, address, city, country, buyerName };
+  return { firstName, lastName, phone, IndexNumber, Department, Faculty, buyerName };
 }
 
 async function findEvent(eventId) {
@@ -324,7 +324,7 @@ async function handleCheckout(req, res) {
   if (!event) return json(res, 404, { error: "Event not found. Refresh the events page and try again." });
   if (!(Number(event.price) > 0)) return json(res, 422, { error: "This event does not require payment." });
   const buyer = buildBuyer(body, user);
-  if (!buyer.firstName || !buyer.lastName || !buyer.phone || !buyer.address || !buyer.city || !buyer.country) {
+  if (!buyer.firstName || !buyer.lastName || !buyer.phone || !buyer.IndexNumber || !buyer.Department || !buyer.Faculty) {
     return json(res, 422, { error: "Complete all billing contact fields before checkout." });
   }
   let notifyUrl;
@@ -359,9 +359,9 @@ async function handleCheckout(req, res) {
     last_name: buyer.lastName,
     email: user.email,
     phone: buyer.phone,
-    address: buyer.address,
-    city: buyer.city,
-    country: buyer.country
+    IndexNumber: buyer.IndexNumber,
+    Department: buyer.Department,
+    Faculty: buyer.Faculty
   };
   fields.hash = createCheckoutHash(
     PAYHERE_MERCHANT_ID,
