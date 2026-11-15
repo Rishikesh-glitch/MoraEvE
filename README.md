@@ -1,48 +1,74 @@
 # MoraEvE
 
-MoraEvE is a university event ticket website using Supabase Auth/PostgreSQL and PayHere sandbox checkout.
+MoraEvE is a university event management and ticketing platform built to make event discovery, registration, and secure payments easier for both students and event organizers.
 
-## Set up Supabase
+## Project Problem
+
+Universities and student clubs often struggle with scattered event communication and manual registration processes. Students may not know about upcoming events, organizers may not have a simple way to publish event details, and payments need to be handled securely without risking fake or duplicate ticket sales.
+
+This project solves that problem by creating a single digital platform where students can:
+
+- discover upcoming events
+- search and filter events by type or keyword
+- sign in with verified email accounts
+- register for free events instantly
+- complete secure online payments for paid events
+- view and manage their tickets from one place
+
+## Solution
+
+MoraEvE provides a simple event website where organizers can publish events with essential details like title, organizer, venue, date, and price. Attendees can browse events, sign in, and register using a verified flow. For paid events, the system creates a pending order and completes ticket issuance only after a verified payment notification is received from PayHere.
+
+The platform is designed to be fast, reliable, and easy to use for university event promotion and attendance management.
+
+## Key Features
+
+- Event browsing and searching
+- Organizer event publishing
+- Email-confirmed sign-in
+- Free event registration
+- Secure PayHere sandbox payments
+- Ticket generation and order tracking
+- My Tickets dashboard for buyers
+- PostgreSQL-backed data storage through Supabase
+
+## Technologies We Used
+
+- Frontend: HTML, CSS, and JavaScript
+- Backend: Node.js
+- Database and Authentication: Supabase (PostgreSQL + Auth)
+- Payment Gateway: PayHere Sandbox Checkout
+- Server-side validation and payment verification: JavaScript utility modules
+- Testing: Node.js built-in test runner
+- API and environment configuration: .env-based configuration
+
+## Project Structure
+
+- `index.html` – front-end interface
+- `style.css` – styling for the website
+- `script.js` – client-side logic
+- `server.js` – Node.js server and API routes
+- `event-utils.js` – event validation and processing
+- `payment-utils.js` – payment hashing and signature verification
+- `ticket-utils.js` – ticket generation and validation logic
+- `supabase.sql` – database schema and setup for events and tickets
+
+## Setup and Run Locally
 
 1. Create a Supabase project.
-2. Run all of `supabase.sql` in **Supabase Dashboard → SQL Editor**. It creates the event, order, and unique-ticket tables and seeds the sample events. Rerun it after updates to add new schema fields, such as event organizers.
-3. In **Authentication → Providers → Email**, enable email and email confirmation. Google sign-in is not used.
-4. In **Authentication → URL Configuration**, set the local Site URL to `http://localhost:3000` and allow that URL as a redirect.
-5. Add the variables from `.env.example` to the existing `.env` (or create `.env` from the example if you do not have one). Keep your current Supabase URL and anon key; replace the placeholders with your own values. The service-role key is used only by the Node server and must never be put in browser code or shared.
+2. Run the SQL from `supabase.sql` in the Supabase SQL editor.
+3. Enable email sign-in and email confirmation in Supabase authentication.
+4. Add your Supabase and PayHere sandbox values to a local `.env` file.
+5. Start the app:
 
-## Configure PayHere sandbox
+   npm.cmd run dev
 
-1. Create a **sandbox** merchant account at [PayHere Sandbox](https://sandbox.payhere.lk/merchant/sign-up). Sandbox accounts are separate from live accounts, and sandbox payments are simulated.
-2. Sign in to the sandbox merchant portal and open **Side Menu → Integrations** to find your Merchant ID.
-3. In **Integrations**, choose **Add Domain/App**, enter the domain or app you are registering, and request approval. Once it is approved, copy the Merchant Secret shown for it. The secret is specific to that domain/app; see PayHere's [Checkout API prerequisites](https://support.payhere.lk/api-&-mobile-sdk/checkout-api).
-4. Put the sandbox values in your local `.env`:
+6. Open http://localhost:3000 in the browser.
 
-       PAYHERE_MERCHANT_ID=your_sandbox_merchant_id
-       PAYHERE_MERCHANT_SECRET=your_approved_domain_merchant_secret
+7. Run the tests:
 
-   Do not use live credentials. For sandbox test cards, see PayHere's [Sandbox & Testing guide](https://support.payhere.lk/sandbox-and-testing).
-5. Keep `APP_BASE_URL=http://localhost:3000` for local browser returns.
-6. PayHere must reach the payment notification endpoint from the public internet. Start a secure tunnel to the local server (for example, `cloudflared tunnel --url http://localhost:3000` or an ngrok HTTPS tunnel), then set `PAYHERE_NOTIFY_URL` to the tunnel URL ending in `/api/payhere/notify`. Use the same HTTPS URL configured for the merchant in PayHere if it requests one.
-7. Never paste PayHere or Supabase secrets into frontend files, chat, or source control. `.env` is ignored by Git.
-8. After changing `.env`, stop the server with Ctrl+C and run `npm.cmd run dev` again so the Node process reloads the credentials.
+   npm.cmd test
 
-## Run locally
+## Why This Project Matters
 
-Requires Node.js 18 or newer. From this folder, run in PowerShell:
-
-    npm.cmd run dev
-
-Open <http://localhost:3000>. The project uses only Node.js built-ins, so no package install is required. Run the focused payment signature tests with:
-
-    npm.cmd test
-
-## Ticket flow
-
-- Users must sign in with an email-confirmed account.
-- Any signed-in user can publish an event immediately by entering its organizer/club name, venue, date, and price. Set the price to `0` for a free event.
-- Free event enrollment issues tickets immediately.
-- Paid event checkout creates a pending order; unique ticket codes are issued only after the backend verifies PayHere's signed payment notification.
-- Each order allows 1–5 tickets. Events do not have an overall capacity limit.
-- A purchaser can see their codes under **My tickets**. Buyer name and email are stored with each ticket and order; administrators can review them in Supabase Table Editor under `public.tickets` and `public.ticket_orders`.
-
-The PayHere success/cancel browser redirect is not treated as proof of payment. To test locally, the public tunnel must remain running so PayHere can post its signed notification to the app.
+MoraEvE helps solve the real-world problem of disorganized event registration and payment handling in university communities. By bringing event publishing, ticket management, and payment verification into one platform, it improves accessibility, trust, and efficiency for both organizers and attendees.
